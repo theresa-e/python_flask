@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Checkerboard</title>
+    <style>
+    * {
+        margin: auto;
+        padding: 0px;
+    }
+    .row {
+        width: 400px;
+        height: 50px;
+        font-size: 0;
+    }
+    .odd-square {
+        width: 50px;
+        height: 50px;
+        background-color: #8bc6bf;
+        display: inline-block;
+        margin: none;
+    }
+    .even-square {
+        width: 50px;
+        height: 50px;
+        background-color:#476467;
+        display: inline-block;
+    }
+    </style>
+</head>
+<body>
+
+{% for i in range(0, 8) %}
+ <div class="row">
+    {% if i % 2 == 0: %}
+        {% for j in range(0, 4) %}
+        <div class="even-square"></div>
+        <div class="odd-square"></div>
+        {% endfor %}
+    {% else %}
+        {% for k in range(0, 4) %}
+        <div class="odd-square"></div>
+        <div class="even-square"></div>
+         {% endfor %}
+     {% endif %}
+ </div>
+{% endfor %}
+
+</body>
+</html>

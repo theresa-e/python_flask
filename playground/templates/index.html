@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Playground</title>
+    <style>
+    body {
+        text-align: center;
+    }
+    .blueBox {
+        width: 200px;
+        height: 200px;
+        background-color: navy;
+        margin: 10px;
+        display: inline-block;
+    }
+    </style>
+</head>
+<body>
+    <h3>Boxes</h3>
+    {% for i in range(0,num): %}
+    <div class="blueBox" style="background-color:{{ color }}"></div>
+    {% endfor %}
+
+</body>
+</html>
