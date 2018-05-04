@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Counter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm text-center">
+                <h1>Count is {{ session['count'] }}</h1>
+                <form>
+                    <button class="btn btn-warning" formaction="/addtwo" type="submit" >Add Two</button>
+                    <button class="btn btn-warning" formaction="/reset" type="submit">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
