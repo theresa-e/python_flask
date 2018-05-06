@@ -1,0 +1,50 @@
+h1 {
+    color: #50493B;
+    font-size: 58px;
+}
+
+p, h5 {
+    color: #FFF
+}
+
+span {
+    background-color: #f7d367;
+    padding: 4px;
+    border-radius: 10px;
+    color: #50493B;
+}
+
+.container {
+    margin-top: 10px;
+}
+
+.navigation{
+    background-color: #A79B97;
+    border: 3px solid #4E3B37;
+    border-radius: 10px;
+    padding: 10px;
+    color: #FFF;
+}
+
+.current-total {
+    background-color: #A79B97;
+    border: 3px solid #4E3B37;
+    width: 182px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-left: -14px;
+    border: 3px solid #4E3B37;
+    margin-bottom: 3px;
+}
+
+.player-status {
+    background-color: #A79B97;
+    border: 3px solid #4E3B37;
+    border-radius: 10px;
+    padding: 10px;
+    height: 500px;
+    color: #FFF;
+    margin-top: 3px;
+    overflow: scroll;
+}
+
