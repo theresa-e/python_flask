@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">My Friends List</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>add friends</h3>
+                <form action="/create_friend" method="POST">
+                    <div class="form-group row">
+                        <label for="first_name" class="col-sm-4 col-form-label" >First Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="first_name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="last_name" class="col-sm-4 col-form-label">Last Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="last_name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="occupation" class="col-sm-4 col-form-label">Occupation:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="occupation">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>current friends</h3>
+                <div class="text-center">
+                        {% for i in db %}
+                        <table class="table table-bordered">
+                        <tr>
+                            <th>First Name:</th>
+                            <td>{{ i['first_name'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Name:</th>
+                            <td>{{ i['last_name'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Occupation:</th>
+                            <td>{{ i['occupation'] }}</td>
+                        </tr>
+                        </hr>
+                        </table>
+                        {% endfor %}
+
+
+                    </tr>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
