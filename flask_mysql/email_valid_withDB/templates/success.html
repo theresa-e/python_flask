@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Email Validation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+    <body>
+        <div class="container">
+            <h1>Email validation</h1>
+            <p>You entered a valid email address! Welcome to the :)</p>
+                {% for i in emaildb %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>{{ i['email'] }}</th>
+                        <td>{{ i['created_at'] }}</td>
+                    </tr>
+                </table>
+                {% endfor %}
+            </tr>
+        </div>
+    </body>
+</html>
