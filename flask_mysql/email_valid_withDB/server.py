@@ -46,5 +46,7 @@ def success():
     all_emails = mysql.query_db("SELECT * FROM emails;")
     return render_template('success.html', emaildb = all_emails)
 
+
+
 if __name__=="__main__":
     app.run(debug=True)

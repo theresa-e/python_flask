@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The Wall</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <style>
+        .subcomment {
+            width: 50%;
+        }
+        
+        .main-comment {
+            background-color: lightblue;
+        }
+        
+        .message-house {
+            border: 1px solid grey;
+            padding: 10px;
+            margin: 20px 0px;
+        }
+    </style>
+</head>
+    <body>
+        <div class="jumbotron">
+        <div class="container">
+            <nav class="navbar navbar-light bg-light">
+                <span class="navbar-brand mb-0 h1">The Wall</span>
+                <p class="text-right">Welcome, {{ user_data[0]['first_name'] + " " + user_data[0]['last_name'] }}!</p>
+               <form action="/logout" method="POST">
+                <input type="submit" class="btn" name="logout" value="logout">
+               </form>
+            </nav>
+            <div class="text-center">
+                <form action="/post_message" method="post">
+                    <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                        </div>
+                        <textarea class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="message"></textarea>
+                        <input type="submit" class="btn" value="Create Post">
+                    </div>
+                </form>
+            </div>
+            <div>
+            <div class="main-comment input-group subcomment input-group-md"></div>
+                {% for i in message_results %}
+                {% for comment in post_comment_results %}
+                    <div class="message-house">
+                        <h4>{{ i['first_name'] + ' ' + i['last_name']}} at {{ i['create_at'] }}</h4>
+                        <p> {{ i["message"] }}</p>
+                        <p>{{ i['message_id'] }}</p>
+                    </div>
+                    <form action="/post_comment" , method="POST">
+                        <div class="input-group-prepend">
+                        </div> 
+                        <h1>{{ comment['first_name'] }}</h1>
+                        <p>{{ comment['comment'] }}</p>
+                        <textarea type="text" name="comment" class="form-control"></textarea>
+                        <input type="hidden" name="message_id" value="{{ i['message_id'] }}">
+                        <input type="submit" class="btn" value="Post Comment">
+                    </form>
+
+                {% endfor %}
+
+                {% endfor %}
+            </div>
+
+            </div>
+        </div>
+        </div>
+    </body>
+</html>
