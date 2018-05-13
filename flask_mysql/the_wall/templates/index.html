@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
@@ -17,7 +18,6 @@
         <div class="row">
             <div class="col-md-6 registerdiv">
                 <h4>Register for an account:</h4>
-                <p>{{ session }}</p>
                 <form action="/register" method="POST">
                     <div class="form-group">
                         <label for="first_name">First Name:</label>
@@ -80,14 +80,10 @@
                             {% endfor -%} {% endif %} {% endwith %}
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Login" class="btn btn-primary"> 
-                            {% with errors = get_flashed_messages(category_filter=["login"]) %}
-                                {% if errors %}
-                                    {%- for msg in errors %}
-                                        <p>{{ msg }}</p>
-                                    {% endfor -%}
-                                {% endif %}
-                            {% endwith %}
+                            <input type="submit" value="Login" class="btn btn-primary"> {% with errors = get_flashed_messages(category_filter=["login"]) %} {% if errors %} {%- for
+                            msg in errors %}
+                            <p>{{ msg }}</p>
+                            {% endfor -%} {% endif %} {% endwith %}
                         </div>
                     </form>
                 </div>

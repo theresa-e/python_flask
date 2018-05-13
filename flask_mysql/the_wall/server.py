@@ -54,8 +54,8 @@ def register():
     results= mysql.query_db(query, data)
     print(len(results))
 
-    # If it is not, add user to our database. 
-    if len(results) == 0:
+    # If email is not associated with an account, add user to our database. 
+    if len(results) < 1:
         if len(request.form['password']) > 0:
             pw_hash = bcrypt.generate_password_hash(request.form['password'])
             query = "INSERT INTO users (first_name, last_name, email, password, create_at, update_at) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(), NOW());"
@@ -66,11 +66,11 @@ def register():
                     'password': pw_hash,
                     }
             mysql.query_db(query, data)
+            return redirect('/success')
         else:
             return redirect('/')
-        return redirect('/success')
 
-    # If it is, clear session and ask them to login instead of registering. 
+    # If email is not, clear session and ask them to login instead of registering. 
     else:
         session.clear()
         flash('The email address ' + request.form['reg_email'] + ' is already associated with an account. Please login or use a different email address. ', 'notice')
@@ -78,7 +78,7 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Save user input in session
+    # Save login input in session
     if 'login_email' not in session:
         session['login_email'] = request.form['login_email']
     session['login_email'] = request.form['login_email']
@@ -88,51 +88,50 @@ def login():
         flash('Please enter an email.', 'login_email')
     elif not EMAIL_REGEX.match(request.form['login_email']):
         flash('Invalid email address, please resubmit.', 'login_email') 
-    print('TEST THIS FUNCTION')
-    # return redirect ('/')
-    # Run a query to see if the email is in our database. 
-    query = "SELECT * FROM users WHERE email =%(email)s;"
-    data = {
-        "email" : request.form['login_email']
-    }
-    results= mysql.query_db(query, data)
-    if 'userid' not in session:
-        session['userid'] = results[0]['id']
-    session['userid'] = results[0]['id']
-
-    # If our query returns 0 results, the user does not exist in our database. Allow them to register.
-    if len(results) == 0:
-        flash('You could not be logged in.', 'login')
-        return redirect('/')
     else:
-        if bcrypt.check_password_hash(results[0]['password'], request.form['login_password']):
-            return redirect('/success')
-        else:
+        # Run a query to see if the email is in our database. 
+        query = "SELECT * FROM users WHERE email =%(email)s;"
+        data = {
+            "email" : request.form['login_email']
+        }
+        results= mysql.query_db(query, data)
+        if len(results) < 1:
             flash('You could not be logged in.', 'login')
-    return redirect ('/')
+            return redirect('/')
+        # If we do have a match, check that the password is valid, save user id in session, and redirect.
+        else:
+            if bcrypt.check_password_hash(results[0]['password'], request.form['login_password']):
+                session['userid'] = results[0]['id']
+                return redirect('/success')
+            else:
+                flash('You could not be logged in.', 'login')
+                return redirect('/')
+    debugHelp(message = "LOGIN")
+    return redirect('/')
 
 @app.route('/success')
 def user():
-    if 'reg_email' not in session:
-            session['reg_email'] = session['login_email']
-    else:
-        session['reg_email'] = session['login_email']
+    # Assign signin email as authentication email. Pull from database. 
+    if 'login_email' in session:
+            session['authentication_email'] = session['login_email']
+    if 'reg_email' in session:
+        session['authentication_email'] = session['reg_email']
     query = "SELECT * FROM users WHERE email =%(email)s;"
     data = {
-        "email" : session['reg_email']
+        "email" : session['authentication_email']
     }
     results= mysql.query_db(query, data)
     if 'userid' not in session:
         session['userid'] = results[0]['id']
     session['userid'] = results[0]['id']
-    message_query = "SELECT u.id as 'user_id', u.first_name, u.last_name, m.message, m.id as 'message_id', m.create_at FROM users u LEFT JOIN messages m ON u.id = m.users_id ORDER BY m.create_at DESC;"
+    message_query = "SELECT u.id as 'user_id', u.first_name, u.last_name, m.message, m.id as 'message_id', m.create_at FROM users u LEFT JOIN messages m ON u.id = m.users_id WHERE message IS NOT NULL ORDER BY m.create_at DESC"
     message_results = mysql.query_db(message_query)
     user_query = "SELECT first_name, last_name, id FROM users WHERE id = %(userid)s;"
     userdata = {
         'userid' : session['userid']
     }
     user_data = mysql.query_db(user_query, userdata)
-    post_comment_query = "SELECT * FROM comments"
+    post_comment_query = "SELECT u.id as 'comment_posted_by', u.first_name as 'commenter_first', u.last_name as 'commenter_last', c.id as 'comment_id', c.comment, c.create_at as 'comment_date', messages_id, m.users_id as 'message_posted_by' FROM users u LEFT JOIN comments c ON u.id = c.users_id LEFT JOIN messages m ON c.messages_id = m.id WHERE comment IS NOT NULL;"
     post_comment_results = mysql.query_db(post_comment_query)
     return render_template('wall.html', message_results=message_results, user_data=user_data, post_comment_results=post_comment_results)
 
@@ -146,8 +145,7 @@ def post_message():
     print('------------.', request.form['message'])
     if 'message' not in session:
         session['message'] = request.form['message']
-    else:
-        session['message'] = request.form['message']
+    session['message'] = request.form['message']
     debugHelp('LOOK AT SESSION')
     query = "INSERT INTO messages (message, create_at, updated_at, users_id) VALUES (%(message)s, NOW(), NOW(), %(users_id)s);"
     data = {
